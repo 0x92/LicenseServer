@@ -8,8 +8,8 @@ uses
 type
   TDM = class(TDataModule)
     MysqlConnection: TMyConnection;
-    MyQuery1: TMyQuery;
-    MyDataSource1: TMyDataSource;
+    GetDataQuery: TMyQuery;
+    Datasource: TMyDataSource;
   private
     { Private-Deklarationen }
   public

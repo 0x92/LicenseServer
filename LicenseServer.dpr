@@ -73,7 +73,6 @@ begin
   Write('[ERROR]:');
   SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
   Write(' '+Text);
-  WriteLn;
 end;
 
 function loadConfig:boolean;
@@ -85,6 +84,18 @@ begin
     DM.MysqlConnection.Password := Ini.ReadString ('Connection', 'pass', '');
     DM.MysqlConnection.Database := Ini.ReadString ('Connection', 'database', '');
     Result := True;
+  except
+    Result := False;
+  end;
+end;
+
+function ConnectToMySQL:boolean;
+begin
+  try
+    DM.MysqlConnection.Connect;
+
+    if Dm.MysqlConnection.Connected then
+      Result := True;
   except
     Result := False;
   end;
@@ -120,6 +131,7 @@ begin
     DM := TDM.Create(nil);                                                        // Datenmodul erstellen
     sFilename := ExtractFilePath(ParamStr(0)) + 'mysql.ini';
     WriteInfo('Scanning for Config ...');
+
     if FileExists(sFilename) then
     begin
       Ini := TIniFile.Create(sFilename);
@@ -142,6 +154,18 @@ begin
       Readln;
       Exit;
     end;
+
+    if ConnectToMySQL then
+    begin
+      WriteInfo('Successfully connected to MySQL.');
+    end
+    else
+    begin
+      WriteError('Could not connect to MySQL. Check the config values!');
+      Readln;
+      Exit;
+    end;
+
 
     WriteInfo('hier');
     ReadLn;

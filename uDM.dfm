@@ -6,12 +6,13 @@ object DM: TDM
     Left = 32
     Top = 48
   end
-  object MyQuery1: TMyQuery
+  object GetDataQuery: TMyQuery
     Connection = MysqlConnection
     Left = 112
     Top = 72
   end
-  object MyDataSource1: TMyDataSource
+  object Datasource: TMyDataSource
+    DataSet = GetDataQuery
     Left = 128
     Top = 16
   end
