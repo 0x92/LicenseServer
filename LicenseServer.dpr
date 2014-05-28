@@ -60,17 +60,14 @@ end;
 procedure WriteInfo(Text: String);
 begin
   WriteLn;
-  WriteLn;
   SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 10);
   Write('[INFO]:');
   SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
   Write(' '+Text);
-  WriteLn;
 end;
 
 procedure WriteError(Text: String);
 begin
-  WriteLn;
   WriteLn;
   SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 12);
   Write('[ERROR]:');
@@ -118,22 +115,34 @@ Loading the config
 
 
 begin
-  try
     WriteHeader;
     CoInitialize(nil);                                                            // Behebt den Xe3 Bug http://qc.embarcadero.com/wc/qcmain.aspx?d=108838                                                          //Debugmethoden an/aus
     DM := TDM.Create(nil);                                                        // Datenmodul erstellen
     sFilename := ExtractFilePath(ParamStr(0)) + 'mysql.ini';
-    //Ini := TIniFile.Create(sFilename);
+    WriteInfo('Scanning for Config ...');
+    if FileExists(sFilename) then
+    begin
+      Ini := TIniFile.Create(sFilename);
+      WriteInfo('Configpath: ' + sFilename);
+    end
+    else
+    begin
+      WriteError('Config not found.');
+      ReadLn;
+      Exit;
+    end;
 
     if loadConfig then
     begin
       WriteInfo('Config was loaded successfully.');
     end
     else
+    begin
       WriteError('Config could not be load.');
+      Readln;
+      Exit;
+    end;
 
-    Readln;
-  finally
-
-  end;
+    WriteInfo('hier');
+    ReadLn;
 end.
