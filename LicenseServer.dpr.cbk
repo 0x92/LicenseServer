@@ -1,4 +1,4 @@
-{ ##############################################################################################
+﻿{ ##############################################################################################
   ## Projectname:  LicenseServer
   ## Author:       0x92
   ## Release:      /
@@ -195,7 +195,10 @@ begin
     Connection.ServerSocket.Port := iConnectionPort;
     Connection.ServerSocket.Active := True;
 
-
-    ReadLn;
+    while Connection.ServerSocket.Active do
+    begin
+      WriteLn('Idle');
+      Sleep(500);
+    end;
 
 end.
